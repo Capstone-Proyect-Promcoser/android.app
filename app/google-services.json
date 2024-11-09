@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "4102470949",
+    "project_id": "promcoser-capstone-proyect",
+    "storage_bucket": "promcoser-capstone-proyect.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:4102470949:android:8a003758ef506ab8086ecc",
+        "android_client_info": {
+          "package_name": "dev.axel.promcoser_capstone_project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmJKgD3SwEyc985CbHHUtZv-6pfPrtFog"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
