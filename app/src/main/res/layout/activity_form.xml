@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#5C95F9"
+    android:padding="16dp">
+
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:text="Actividad 1"
+        android:textColor="#FFFFFF"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/detail_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:padding="8dp"
+        android:text="Aquí va el detalle de la actividad 1 que deben redactar el ingeniero. Es un texto que no puede editarse."
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title" />
+
+    <TextView
+        android:id="@+id/form_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="FORMULARIO DE REGISTRO"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/detail_text" />
+
+    <TextView
+        android:id="@+id/label_desc_activity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Descripción de la actividad"
+        android:textColor="#FFFFFF"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/form_title" />
+
+    <EditText
+        android:id="@+id/desc_activity"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        app:layout_constraintTop_toBottomOf="@id/label_desc_activity"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:padding="8dp" />
+
+    <!-- Hora de Inicio y Hora de Fin -->
+
+    <TextView
+        android:id="@+id/label_hour_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="20dp"
+        android:text="Hora de Inicio"
+        android:textColor="#FFFFFF"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/desc_activity" />
+
+    <!-- Horómetro Inicial -->
+
+    <TextView
+        android:id="@+id/label_timeDescanso"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Tiempo de descanso"
+        android:textColor="#FFFFFF"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/horometro" />
+
+    <TextView
+        android:id="@+id/label_timeMovil"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="180dp"
+        android:layout_marginTop="8dp"
+        android:text="Tiempo de Movilización"
+        android:textColor="#FFFFFF"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/horometro" />
+
+    <EditText
+        android:id="@+id/hour_start"
+        android:layout_width="173dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
+        android:background="#FFFFFF"
+        app:layout_constraintEnd_toStartOf="@id/label_hour_end"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/label_hour_start" />
+
+    <EditText
+        android:id="@+id/descanso"
+        android:layout_width="173dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="#FFFFFF"
+        app:layout_constraintEnd_toStartOf="@id/label_hour_end"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/label_timeDescanso" />
+
+
+    <!-- Tiempo de Descanso y Movilización -->
+
+    <EditText
+        android:id="@+id/movilizacion"
+        android:layout_width="173dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="#FFFFFF"
+        app:layout_constraintEnd_toStartOf="@id/label_hour_end"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/label_timeMovil" />
+
+    <TextView
+        android:id="@+id/label_hour_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="20dp"
+        android:text="Hora de Fin"
+        android:textColor="#FFFFFF"
+        app:layout_constraintStart_toEndOf="@id/hour_start"
+        app:layout_constraintTop_toBottomOf="@id/desc_activity" />
+
+    <EditText
+        android:id="@+id/hour_end"
+        android:layout_width="181dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="4dp"
+        android:background="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@id/hour_start"
+        app:layout_constraintTop_toBottomOf="@id/label_hour_end" />
+
+    <TextView
+        android:id="@+id/label_horometro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Horómetro Inicial"
+        android:textColor="#FFFFFF"
+        app:layout_constraintTop_toBottomOf="@+id/combustible"
+        tools:layout_editor_absoluteX="-2dp" />
+
+    <TextView
+        android:id="@+id/label_combustible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Combustible Inicial"
+        android:textColor="#FFFFFF"
+        app:layout_constraintTop_toBottomOf="@id/hour_start"
+        tools:layout_editor_absoluteX="-2dp" />
+
+    <EditText
+        android:id="@+id/horometro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:background="#FFFFFF"
+        app:layout_constraintTop_toBottomOf="@id/label_horometro"
+        tools:layout_editor_absoluteX="133dp" />
+
+    <EditText
+        android:id="@+id/combustible"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="#FFFFFF"
+        app:layout_constraintTop_toBottomOf="@+id/label_combustible"
+        tools:layout_editor_absoluteX="-26dp" />
+
+
+    <!-- Incidentes -->
+
+    <!-- Botón Guardar -->
+
+    <TextView
+        android:id="@+id/label_incidente"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="¿Ocurrió algún incidente?"
+        tools:layout_editor_absoluteX="11dp"
+        tools:layout_editor_absoluteY="851dp" /><![CDATA[55dp" />]]><!-- Etiqueta de Incidentes -->
+    app:layout_constraintStart_toStartOf="parent"
+    android:layout_marginTop="16dp" />
+
+    <!-- Contenedor de CheckBoxes -->
+    <!-- Ajusta el ancho al contenido -->
+    android:layout_height="wrap_content"
+    android:backgroundTint="#32CD32" <!-- Fondo verde -->
+    android:text="GUARDAR"
+    android:textColor="#FFFFFF" <!-- Letras blancas -->
+    android:layout_marginTop="16dp"
+    app:layout_constraintTop_toBottomOf="@id/incident_options" <!-- Cambia según el ID del elemento superior -->
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.5" <!-- Centra horizontalmente el botón --><![CDATA[ />
+
+
+    ]]>
+
+    <Button
+        android:id="@+id/button_save"
+        android:layout_width="152dp"
+        android:layout_height="51dp"
+        android:backgroundTint="#32CD32"
+        android:text="GUARDAR"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="120dp"
+        tools:layout_editor_absoluteY="622dp" />
+
+    <TextView
+        android:id="@+id/label_incidente"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:text="¿Hubo algún incidente?"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/descanso"
+        tools:layout_editor_absoluteX="-1dp" />
+
+    <CheckBox
+        android:id="@+id/checkbox_no"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No"
+        android:textColor="#FFFFFF"
+        tools:layout_editor_absoluteX="196dp"
+        tools:layout_editor_absoluteY="524dp" />
+
+    <CheckBox
+        android:id="@+id/checkbox_si"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sí"
+        android:textColor="#FFFFFF"
+        tools:layout_editor_absoluteX="262dp"
+        tools:layout_editor_absoluteY="524dp" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
