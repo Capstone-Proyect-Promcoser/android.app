@@ -13,6 +13,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import dev.axel.promcoser_capstone_project.MainActivity
 import dev.axel.promcoser_capstone_project.R
+import dev.axel.promcoser_capstone_project.ui.fragments.Actividades.ActividadesFragment
 
 class Login : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,7 +46,7 @@ class Login : AppCompatActivity() {
                 if (task.isSuccessful){
                     // En caso si se pueda logear
                     Snackbar.make(findViewById(android.R.id.content), "Bienvenido", Snackbar.LENGTH_SHORT).show()
-                    startActivity(Intent(this, MainActivity::class.java))
+                    startActivity(Intent(this, ActividadesFragment::class.java))
                 }else{
                     // En caso de que no se pueda logear
                     Snackbar.make(findViewById(android.R.id.content), "Error al iniciar sesión", Snackbar.LENGTH_SHORT).show()
