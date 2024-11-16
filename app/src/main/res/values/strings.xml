@@ -27,4 +27,19 @@
     <string name="register_psw_validation_hint">Vuelva a ingresar su contraseña</string>
     <string name="register_btn_register_text">Registrarse</string>
     <string name="register_tv_login">¿Ya tienes una cuenta?</string>
+    <string name="register_btn_dropdown_hint">Seleccione</string>
+    <string name="register_btn_dropdown_hint_hint">Tipo de colaborador</string>
+    <string name="operador_c1_t1">Bienvenido,</string>
+    <string name="operador_c1_t2">ESTAS SON TUS</string>
+    <string name="operador_c1_t3">ACTIVIDADES PROGRAMADAS</string>
+    <string name="operador_c1_t4">VER INFORME DE ACTIVIDADES</string>
+    <string name="f_a_tv_1">FORMULARIO DE REGISTRO</string>
+    <string name="f_a_tv_2">Descripción de la actividad</string>
+    <string name="f_a_tv_4">Horámetro inicial</string>
+    <string name="f_a_tv_5">Cantidad de combustible inicial</string>
+
+    <string-array name="user_type">
+        <item>Ingeniero</item>
+        <item>Operador</item>
+    </string-array>
 </resources>

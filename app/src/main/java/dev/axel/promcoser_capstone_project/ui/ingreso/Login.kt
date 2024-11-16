@@ -11,6 +11,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import dev.axel.promcoser_capstone_project.MainActivity
 import dev.axel.promcoser_capstone_project.R
 
@@ -30,6 +31,7 @@ class Login : AppCompatActivity() {
         val Login_btn_login: Button = findViewById(R.id.login_btn_login)
         val Login_btn_register: Button = findViewById(R.id.login_btn_register)
         val auth = Firebase.auth
+        val db = FirebaseFirestore.getInstance()
 
         // En caso se quiera registrar
         Login_btn_register.setOnClickListener {
@@ -45,7 +47,31 @@ class Login : AppCompatActivity() {
                 if (task.isSuccessful){
                     // En caso si se pueda logear
                     Snackbar.make(findViewById(android.R.id.content), "Bienvenido", Snackbar.LENGTH_SHORT).show()
-                    startActivity(Intent(this, MainActivity::class.java))
+
+                    val user_uid = auth.currentUser?.uid
+
+                    // Obteniendo el documento de id igual al uid del usuario de la tabla usuario
+                    db.collection("usuario").document(user_uid.toString()).get().addOnSuccessListener { document ->
+                        val UserTypeId = document.get("u_id_rol").toString()
+
+                        // Asignando caras a mostrar según su rol
+                        db.collection("rol").document(UserTypeId).get().addOnSuccessListener { roldoc ->
+                            val UserType = roldoc.get("r_descripcion").toString()
+
+                            if (UserType == "Operador"){
+                                startActivity(Intent(this, MainActivity::class.java))
+                            }
+                            if (UserType == "Ingeniero"){
+                                Snackbar.make(findViewById(android.R.id.content), "Proximamente", Snackbar.LENGTH_SHORT).show()
+                                //startActivity(Intent(this, MainActivity::class.java))
+                            }
+
+                            //if (UserType == "Administrador"){
+                            //    startActivity(Intent(this, MainActivity::class.java))
+                            //}
+                        }
+                    }
+
                 }else{
                     // En caso de que no se pueda logear
                     Snackbar.make(findViewById(android.R.id.content), "Error al iniciar sesión", Snackbar.LENGTH_SHORT).show()

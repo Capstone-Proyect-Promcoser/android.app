@@ -52,6 +52,7 @@
         android:hint="@string/register_lastname"
         android:inputType="text"
         android:minHeight="48dp"
+        android:textColor="#FFFFFF"
         android:textColorHint="#FFFFFF"
         android:textStyle="bold|italic"
         app:layout_constraintEnd_toEndOf="parent"
@@ -70,6 +71,7 @@
         android:hint="@string/register_email_hint"
         android:inputType="textEmailAddress"
         android:minHeight="48dp"
+        android:textColor="#FFFFFF"
         android:textColorHint="#FFFFFF"
         android:textStyle="bold|italic"
         app:layout_constraintEnd_toEndOf="parent"
@@ -88,11 +90,12 @@
         android:hint="@string/register_psw_hint"
         android:inputType="textPassword"
         android:minHeight="48dp"
+        android:textColor="#FFFFFF"
         android:textColorHint="#FFFFFF"
         android:textStyle="bold|italic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/register_et_email" />
+        app:layout_constraintTop_toBottomOf="@+id/register_btn_dropdown" />
 
     <EditText
         android:id="@+id/register_et_psw_validation"
@@ -155,4 +158,40 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/register_btn_dropdown"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:hint="@string/register_btn_dropdown_hint_hint"
+        android:textColorHint="@color/white"
+        app:startIconDrawable="@drawable/ic_register_btn_dropdown"
+        app:boxBackgroundMode="outline"
+        app:boxStrokeColor="@color/white"
+        app:hintTextColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/register_et_email"
+        app:placeholderTextColor="@color/white">
+
+
+        <AutoCompleteTextView
+            android:id="@+id/register_btn_dropdown_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="#51e6a7"
+            android:inputType="none"
+            android:outlineAmbientShadowColor="#F4F4F4"
+            android:paddingTop="16sp"
+            android:paddingBottom="16sp"
+            android:text="@string/register_btn_dropdown_hint"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            app:simpleItemSelectedColor="#FFFFFF" />
+    </com.google.android.material.textfield.TextInputLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
