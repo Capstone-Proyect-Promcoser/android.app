@@ -2,7 +2,7 @@ package dev.axel.promcoser_capstone_project.ui.model
 
 
 data class ModeloDetalleParteDiario (
-    val detalleParteID: Int,
+    val detalleParteID: Int? = null,
     val idParte: Int,
     val horaInicio: String?,
     val horaFinTime: String?,
