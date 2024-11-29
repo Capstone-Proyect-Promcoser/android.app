@@ -2,6 +2,7 @@ package dev.axel.promcoser_capstone_project
 
 import android.os.Bundle
 import android.view.Menu
+import androidx.activity.viewModels
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
@@ -11,15 +12,27 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
+import com.google.gson.Gson
 import dev.axel.promcoser_capstone_project.databinding.ActivityMainBinding
+import dev.axel.promcoser_capstone_project.ui.ingreso.Login
+import dev.axel.promcoser_capstone_project.ui.model.SharedViewModel
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+    private val sharedViewModel: SharedViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Recuperando datos del usuario
+        val loginResponseJson = intent.getStringExtra("loginResponseJson")
+        val loginResponse = Gson().fromJson(loginResponseJson, Login.ExtendedLoginResponse::class.java)
+
+        // Asignando el modelo de login
+        sharedViewModel.loginResponse = loginResponse
+
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -51,4 +64,6 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
+
+
 }
