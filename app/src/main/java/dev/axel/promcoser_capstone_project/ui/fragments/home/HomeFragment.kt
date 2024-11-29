@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
@@ -65,7 +66,33 @@ class HomeFragment : Fragment() {
         rvActividad.layoutManager = LinearLayoutManager(requireContext())
         lifecycleScope.launch {
             val activities = getListaActividades() // Call the suspending function
-            rvActividad.adapter = ActividadAdapter(activities) // Set the adapter with the result
+
+
+            rvActividad.adapter = ActividadAdapter(activities) { actividad ->
+
+
+
+
+                //Aquí pasamos datos (depende de eso, sino lo eliminas) del ítem
+                val bundle = Bundle().apply {
+                    //Datos ejemplo:
+
+                    /*
+                    putString("descripcion", actividad.descripcion)
+                    putInt("icono", actividad.icono)*/
+
+
+                }
+
+                //Aquí te rediriges al Fragment_Actividad
+                findNavController().navigate(R.id.action_homeFragment_to_fragment_actividad) //Si envias info a la actividad colo: , bundle)
+
+
+            }// Set the adapter with the result
+
+
+
+
         }
         //rvActividad.adapter = ActividadAdapter(getListaActividades())
 

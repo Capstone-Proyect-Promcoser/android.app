@@ -17,4 +17,11 @@
         android:label="@string/menu_gallery"
         tools:layout="@layout/fragment_actividad" />
 
+
+    <action
+        android:id="@+id/action_homeFragment_to_fragment_actividad"
+        app:destination="@layout/fragment_actividad" />
+
+
+
 </navigation>

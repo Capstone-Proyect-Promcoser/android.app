@@ -9,7 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import dev.axel.promcoser_capstone_project.R
 import dev.axel.promcoser_capstone_project.ui.model.ModelActividadItem
 
-class ActividadAdapter (private var lista_actividades: List<ModelActividadItem>): RecyclerView.Adapter<ActividadAdapter.ViewHolder>(){
+class ActividadAdapter (
+    private var lista_actividades: List<ModelActividadItem>, // Lista de actividades
+    private val onItemClick: (Int) -> Unit  // Función lambda para manejar el clic en un elemento
+): RecyclerView.Adapter<ActividadAdapter.ViewHolder>(){
 
     // Declaración de los items de la actividad
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
@@ -31,6 +34,12 @@ class ActividadAdapter (private var lista_actividades: List<ModelActividadItem>)
         val item = lista_actividades[position]
         holder.actividad_tv_actividad.text = item.item_actividad_tv_actividad.toString()
         holder.actividad_iv_status.setImageResource(item.item_actividad_iv_status)
+
+        //Configuración del click en el item completo
+        holder.itemView.setOnClickListener{
+            onItemClick(position) //Llama aquí a la función lambda con la posición del elemento
+        }
+
     }
 
 }
