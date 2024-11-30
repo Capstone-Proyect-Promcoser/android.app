@@ -20,5 +20,10 @@
         android:name="dev.axel.promcoser_capstone_project.ui.fragments.gallery.GalleryFragment"
         android:label="@string/menu_gallery"
         tools:layout="@layout/fragment_actividad" />
+    <fragment
+        android:id="@+id/nav_detalleParte"
+        android:name="dev.axel.promcoser_capstone_project.ui.fragments.home.DetalleParteFragment"
+        android:label="fragment_detalle_parte"
+        tools:layout="@layout/fragment_detalle_parte" />
 
 </navigation>

@@ -1,19 +1,16 @@
 package dev.axel.promcoser_capstone_project.ui.fragments.home
 
-import android.content.Intent
 import android.os.Bundle
 import android.text.format.DateUtils.isToday
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
@@ -23,8 +20,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
 import dev.axel.promcoser_capstone_project.R
 import dev.axel.promcoser_capstone_project.databinding.FragmentHomeBinding
-import dev.axel.promcoser_capstone_project.ui.ingreso.Register
 import dev.axel.promcoser_capstone_project.ui.model.ModelActividadItem
+import dev.axel.promcoser_capstone_project.ui.model.ModelParteDiarioItem
 import dev.axel.promcoser_capstone_project.ui.model.SharedViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -45,7 +42,8 @@ import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
-class HomeFragment : Fragment() {
+
+class DetalleParteFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     val sharedViewModel: SharedViewModel by activityViewModels()
@@ -53,50 +51,29 @@ class HomeFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
+
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        val view: View = inflater.inflate(R.layout.fragment_home, container, false)
-        // Obteniendo información por parte del usuario
-
-
-
-        val home_tv_user_name: TextView = view.findViewById(R.id.home_tv_user_name)
-        home_tv_user_name.text = sharedViewModel.loginResponse?.nombres
-
-        // Para mostra la fecha de hoy
-        val currentDate = LocalDate.now()
-        val formatter = DateTimeFormatter.ofPattern("d 'de' MMMM", Locale("es", "ES")) // Spanish locale
-        val formattedDate = currentDate.format(formatter).toString().uppercase()
-
-        val home_tv_fecha: TextView = view.findViewById(R.id.home_tv_fecha)
-        home_tv_fecha.text = "PARA HOY  $formattedDate"
+    ): View? {
+        // Inflate the layout for this fragment
+        val view =  inflater.inflate(R.layout.fragment_detalle_parte, container, false)
 
         // Creando el layout para cada item
-        val rvActividad: RecyclerView = view.findViewById(R.id.home_rv_actividades_list)
+        val rvActividad: RecyclerView = view.findViewById(R.id.rvParteDiario)
         rvActividad.layoutManager = LinearLayoutManager(requireContext())
         lifecycleScope.launch {
-            val activities = getListaActividades() // Call the suspending function
+            val activities = getListaDetalle() // Call the suspending function
             withContext(Dispatchers.Main) {
-                rvActividad.adapter = ActividadAdapter(activities) // Set the adapter with the result
+                rvActividad.adapter = ParteDiarioAdapter(activities) // Set the adapter with the result
             }
-        }
-        //rvActividad.adapter = ActividadAdapter(getListaActividades())
-
-
-        // Vista del botón de lista de actividades
-        val home_btn_informe_actividades: Button = view.findViewById(R.id.home_btn_informe_actividades)
-        home_btn_informe_actividades.setOnClickListener {
-            findNavController().navigate(R.id.nav_detalleParte)
         }
 
         return view
     }
 
-    private suspend fun getListaActividades(): List<ModelActividadItem> {
-        val listaActividades: ArrayList<ModelActividadItem> = ArrayList()
+    private suspend fun getListaDetalle(): List<ModelParteDiarioItem> {
+        val listaActividades: ArrayList<ModelParteDiarioItem> = ArrayList()
         //listaActividades.add(ModelActividadItem(descripcion, R.drawable.waiting_activity_icon))
 
         val retrofit = Retrofit.Builder()
@@ -106,42 +83,29 @@ class HomeFragment : Fragment() {
 
         val parteDiarioService = retrofit.create(ParteDiarioService::class.java)
 
+
         //lifecycleScope.launch {
         try {
             val parteDiarioItems = parteDiarioService.getParteDiario()
             //Log.d("Mensaje", "ParteDiarioItems: $parteDiarioItems")
 
             for (parteDiarioItem in parteDiarioItems) {
-                val currentDate = LocalDate.now()
-                //Log.d("Mensaje", "Fecha actual: $currentDate")
 
-                val fechaEjecucionLocalDate = parteDiarioItem.fechaEjecucion.toInstant()
-                                                .atZone(ZoneId.systemDefault()).toLocalDate()
-                //Log.d("Mensaje", "Fecha de ejecución: $fechaEjecucionLocalDate")
-
-                if ((fechaEjecucionLocalDate.isEqual(currentDate)) &&
-                    (parteDiarioItem.idOperador.toString() == sharedViewModel.loginResponse?.dni.toString()) ) {
-                    // Obtención del id del ParteDiario
-                    val idparte = parteDiarioItem.idParte.toInt()
+                val idparte = parteDiarioItem.idParte.toInt()
                     //Log.d("Mensaje", "ID del ParteDiario: $idparte")
 
-                    // Consultas de detalles del ParteDiario
-                    val detalleParteDiarioService = retrofit.create(DetalleParteDiarioService::class.java)
-                    val detalleParteDiarioItems = detalleParteDiarioService.getDetalleParteDiario(idparte)
+                val fechaEjecucion = parteDiarioItem.fechaEjecucion
 
-                    for (detalleParteDiarioItem in detalleParteDiarioItems) {
-                        //Log.d("Mensaje", "DetalleParteDiarioItem: $detalleParteDiarioItem")
-                        val descripcion = detalleParteDiarioItem.trabajoEfectuado.toString()
-
-                        if (detalleParteDiarioItem.estadoTarea == true){
-                            listaActividades.add(ModelActividadItem(descripcion, R.drawable.check_icon, detalleParteDiarioItem))
-                        } else {
-                            listaActividades.add(ModelActividadItem(descripcion, R.drawable.waiting_activity_icon, detalleParteDiarioItem))
-                        }
-                    }
+                val fechaRegistro = parteDiarioItem.fechaRegistro
 
 
-                }
+
+
+
+                listaActividades.add(ModelParteDiarioItem(idparte,fechaEjecucion,fechaRegistro))
+
+
+
             }
         } catch (e: Exception) {
             Log.d("Mensaje", "Error al obtener las actividades: ${e.message}")
@@ -198,4 +162,5 @@ class HomeFragment : Fragment() {
         val observaciones: String,
         val cantidad: Int
     )
+
 }
