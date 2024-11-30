@@ -17,6 +17,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.gson.Gson
 import dev.axel.promcoser_capstone_project.R
 import dev.axel.promcoser_capstone_project.databinding.FragmentHomeBinding
 import dev.axel.promcoser_capstone_project.ui.model.ModelActividadItem
@@ -129,9 +130,9 @@ class HomeFragment : Fragment() {
                         val descripcion = detalleParteDiarioItem.trabajoEfectuado.toString()
 
                         if (detalleParteDiarioItem.estadoTarea == true){
-                            listaActividades.add(ModelActividadItem(descripcion, R.drawable.check_icon))
+                            listaActividades.add(ModelActividadItem(descripcion, R.drawable.check_icon, detalleParteDiarioItem))
                         } else {
-                            listaActividades.add(ModelActividadItem(descripcion, R.drawable.waiting_activity_icon))
+                            listaActividades.add(ModelActividadItem(descripcion, R.drawable.waiting_activity_icon, detalleParteDiarioItem))
                         }
                     }
 

@@ -7,14 +7,14 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
-    <string name="menu_home">Home</string>
+    <string name="menu_home">Vista Actividades</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
     <string name="presentation_promcoser_tittle">Promcoser</string>
     <string name="presentation_text_1">Somos un equipo que ejecuta obras de ingeniería civil y electromecánica superando las expectativas de nuestros clientes,basada en nuestros compromisos en seguridad, salud en el trabajo, medio ambiente, calidad y valores empresariales.</string>
     <string name="presentation_button_text">Ingresar</string>
-    <string name="login_email">Ingrese su correo</string>
-    <string name="login_hint_email">correo@gmail.com</string>
+    <string name="login_email">Ingrese su DNI</string>
+    <string name="login_hint_email">Ejemplo:87654321</string>
     <string name="login_tv_password">Ingrese su contraseña</string>
     <string name="login_hint_psw">contraseña</string>
     <string name="login_reg_txt">¿Nuevo en la aplicación?</string>
@@ -35,8 +35,16 @@
     <string name="operador_c1_t4">VER INFORME DE ACTIVIDADES</string>
     <string name="f_a_tv_1">FORMULARIO DE REGISTRO</string>
     <string name="f_a_tv_2">Descripción de la actividad</string>
-    <string name="f_a_tv_4">Horámetro inicial</string>
-    <string name="f_a_tv_5">Cantidad de combustible inicial</string>
+    <string name="f_a_tv_4">Incidencias</string>
+    <string name="f_a_tv_5">Observaciones</string>
+    <string name="view_worker_txt_1">Marca del horómetro al momento</string>
+    <string name="view_worker_txt_hint_1">Ejemplo: 102.5</string>
+    <string name="view_worker_txt_hint_2">Ingresa observación si se requiere</string>
+    <string name="view_worker_txt_hint_3">Ingrese si ocurrio alguna incidencia</string>
+    <string name="register_dni">Ingrese su DNI</string>
+    <string name="register_fecha_nacimiento">Ingrese su fecha de nacimiento</string>
+    <string name="register_numero">Ingrese su número de celular</string>
+    <string name="register_direccion">Ingrese su dirección</string>
 
     <string-array name="user_type">
         <item>Ingeniero</item>

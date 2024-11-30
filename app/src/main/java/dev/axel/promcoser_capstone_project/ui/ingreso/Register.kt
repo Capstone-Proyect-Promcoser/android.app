@@ -3,19 +3,20 @@ package dev.axel.promcoser_capstone_project.ui.ingreso
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.firestore.FirebaseFirestore
 import dev.axel.promcoser_capstone_project.R
 import dev.axel.promcoser_capstone_project.ui.model.ModeloUsuario
+import kotlinx.coroutines.launch
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.POST
 
 class Register : AppCompatActivity() {
 
@@ -25,7 +26,6 @@ class Register : AppCompatActivity() {
         // Mostrando los tipos de usuario elegibles
         val user_types = resources.getStringArray(R.array.user_type)
         val arrayAdapter = ArrayAdapter(this, R.layout.dropdown_item, user_types)
-        val dropdown = findViewById<AutoCompleteTextView>(R.id.register_btn_dropdown_item).setAdapter(arrayAdapter)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,19 +39,19 @@ class Register : AppCompatActivity() {
         }
 
 
-        val Register_btn_dropdown: AutoCompleteTextView = findViewById(R.id.register_btn_dropdown_item)
-
-
 
         val Register_et_name: EditText = findViewById(R.id.register_et_name)
         val Register_et_lastname: EditText = findViewById(R.id.register_et_lastname)
+        val Register_et_dni: EditText = findViewById(R.id.register_et_dni)
+        val Register_et_fecha_nacimiento: EditText = findViewById(R.id.register_et_fecha_nacimiento)
+        val Register_et_celular: EditText = findViewById(R.id.register_et_celular)
+        val Register_et_direccion: EditText = findViewById(R.id.register_et_direccion)
         val Register_et_email: EditText = findViewById(R.id.register_et_email)
         val Register_et_psw: EditText = findViewById(R.id.register_et_psw)
         val Register_et_psw_validation: EditText = findViewById(R.id.register_et_psw_validation)
         val Register_btn_register: Button = findViewById(R.id.register_btn_register)
         val Register_btn_login: Button = findViewById(R.id.register_btn_login)
-        val db = FirebaseFirestore.getInstance()
-        val auth = FirebaseAuth.getInstance()
+
 
 
 
@@ -60,56 +60,44 @@ class Register : AppCompatActivity() {
             startActivity(Intent(this, Login::class.java))
         }
 
-        // En caso piense registrarse
         Register_btn_register.setOnClickListener {
+            val retrofit = Retrofit.Builder()
+                .baseUrl("https://amusing-presumably-man.ngrok-free.app/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
 
-            val user_type_text = Register_btn_dropdown.text.toString()
-            if (user_type_text == "" || user_type_text == "Seleccione"){
-                Snackbar.make(findViewById(android.R.id.content), "Seleccione un tipo de usuario", Snackbar.LENGTH_SHORT).show()
+            val registerService = retrofit.create(RegisterService::class.java)
 
-            } else{
-                // Caso se haya seleccionado algún tipo de usuario
+            lifecycleScope.launch {
+                try {
+                    val registerRequest = ModeloUsuario(
+                        Register_et_dni.text.toString(),
+                        Register_et_name.text.toString(),
+                        Register_et_lastname.text.toString(),
+                        Register_et_fecha_nacimiento.text.toString(),
+                        Register_et_celular.text.toString(),
+                        Register_et_email.text.toString(),
+                        Register_et_direccion.text.toString(),
+                        Register_et_psw.text.toString()
+                    )
+                    val response = registerService.createUser(registerRequest)
+                    Snackbar.make(findViewById(android.R.id.content), "Se ha registrado correctamente", Snackbar.LENGTH_SHORT).show()
+                    startActivity(Intent(this@Register, Login::class.java))
 
-                // Obtenemos el id del rol
-                var user_type = ""
-                val user_type_text = Register_btn_dropdown.text.toString()
-                db.collection("rol").whereEqualTo("r_descripcion", user_type_text).get().addOnSuccessListener { documents ->
-                    for (document in documents) {
-                        user_type = document.get("r_id").toString()
-                    }
+
+                } catch (e: Exception) {
+                    Snackbar.make(findViewById(android.R.id.content), "Error al registrar", Snackbar.LENGTH_SHORT).show()
                 }
-
-                val name = Register_et_name.text.toString()
-                val lastname = Register_et_lastname.text.toString()
-                val email = Register_et_email.text.toString()
-                val psw = Register_et_psw.text.toString()
-                val psw_validation = Register_et_psw_validation.text.toString()
-
-                if (psw != psw_validation){
-                    Snackbar.make(findViewById(android.R.id.content), "Las contraseñas no coinciden", Snackbar.LENGTH_SHORT).show()
-                } else{
-                    // Se genera un usuario (se registra)
-                    auth.createUserWithEmailAndPassword(email, psw).addOnCompleteListener(this){ task ->
-                        if (task.isSuccessful){
-                            val user: FirebaseUser? = auth.currentUser
-                            val uid = user?.uid
-                            val userModel = ModeloUsuario(uid, user_type, name, lastname, email)
-
-                            db.collection("usuario").document(uid.toString()).set(userModel).addOnSuccessListener {
-                                Snackbar.make(findViewById(android.R.id.content), "Usuario registrado", Snackbar.LENGTH_SHORT).show()
-                                startActivity(Intent(this, Login::class.java))
-                            }.addOnFailureListener {
-                                Snackbar.make(findViewById(android.R.id.content), "Error al registrar usuario", Snackbar.LENGTH_SHORT).show()
-                            }
-                        }
-                    }.addOnFailureListener{ error ->
-                        Snackbar.make(findViewById(android.R.id.content), error.message.toString(), Snackbar.LENGTH_SHORT).show()
-                    }
-
-                }
-
             }
 
         }
+
     }
+
+
+    interface RegisterService  {
+        @POST("api/Personal/CreatePersonal")
+        suspend fun createUser(user: ModeloUsuario): Response
+    }
+    data class Response(val message: String)
 }
