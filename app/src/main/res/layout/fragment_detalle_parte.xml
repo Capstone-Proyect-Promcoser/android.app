@@ -30,4 +30,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="343dp"
+        android:layout_height="348dp"
+        tools:layout_editor_absoluteX="33dp"
+        tools:layout_editor_absoluteY="344dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
