@@ -8,12 +8,21 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.gson.Gson
 import dev.axel.promcoser_capstone_project.MainActivity
 import dev.axel.promcoser_capstone_project.R
+import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.HttpException
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.Body
+import retrofit2.http.POST
 
 class Login : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,56 +39,61 @@ class Login : AppCompatActivity() {
         val Login_et_psw: EditText = findViewById(R.id.login_et_psw)
         val Login_btn_login: Button = findViewById(R.id.login_btn_login)
         val Login_btn_register: Button = findViewById(R.id.login_btn_register)
-        val auth = Firebase.auth
-        val db = FirebaseFirestore.getInstance()
+
 
         // En caso se quiera registrar
         Login_btn_register.setOnClickListener {
             startActivity(Intent(this, Register::class.java))
         }
 
-        // Para el acceso a la cuenta
         Login_btn_login.setOnClickListener {
-            val email = Login_et_email.text.toString()
-            val psw = Login_et_psw.text.toString()
+            val retrofit = Retrofit.Builder()
+                .baseUrl("https://amusing-presumably-man.ngrok-free.app/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
 
-            auth.signInWithEmailAndPassword(email, psw).addOnCompleteListener(this){ task ->
-                if (task.isSuccessful){
-                    // En caso si se pueda logear
-                    Snackbar.make(findViewById(android.R.id.content), "Bienvenido", Snackbar.LENGTH_SHORT).show()
+            val authService = retrofit.create(AuthService::class.java)
 
-                    val user_uid = auth.currentUser?.uid
+            lifecycleScope.launch {
+                try {
+                    val loginRequest = LoginRequest(Login_et_email.text.toString(), Login_et_psw.text.toString())
+                    val loginResponse = authService.iniciarSesion(loginRequest)
 
-                    // Obteniendo el documento de id igual al uid del usuario de la tabla usuario
-                    db.collection("usuario").document(user_uid.toString()).get().addOnSuccessListener { document ->
-                        val UserTypeId = document.get("u_id_rol").toString()
+                    // Usando los valores obtenidos
+                    val nombre = loginResponse.nombres
 
-                        // Asignando caras a mostrar según su rol
-                        db.collection("rol").document(UserTypeId).get().addOnSuccessListener { roldoc ->
-                            val UserType = roldoc.get("r_descripcion").toString()
+                    Snackbar.make(findViewById(android.R.id.content), "Bienvenido $nombre", Snackbar.LENGTH_SHORT).show()
 
-                            if (UserType == "Operador"){
-                                startActivity(Intent(this, MainActivity::class.java))
-                            }
-                            if (UserType == "Ingeniero"){
-                                Snackbar.make(findViewById(android.R.id.content), "Proximamente", Snackbar.LENGTH_SHORT).show()
-                                //startActivity(Intent(this, MainActivity::class.java))
-                            }
+                    // Añadiendo campos adicionales a la respuesta
+                    val extendedLoginResponse = ExtendedLoginResponse(loginResponse.nombres, loginResponse.apellidos, loginResponse.token, loginResponse.isEmailSent, Login_et_email.text.toString())
 
-                            //if (UserType == "Administrador"){
-                            //    startActivity(Intent(this, MainActivity::class.java))
-                            //}
-                        }
+
+                    // Pasando la data al siguiente activity
+                    val gson = Gson()
+                    val extendedLoginResponseJson = gson.toJson(extendedLoginResponse)
+
+                    startActivity(Intent(this@Login, MainActivity::class.java).putExtra("loginResponseJson", extendedLoginResponseJson))
+                } catch (e: HttpException) {
+                    if (e.code() == 400) {
+                        Snackbar.make(findViewById(android.R.id.content), "Credenciales incorrectas", Snackbar.LENGTH_SHORT).show()
+                    } else {
+                        // Handle other HTTP errors
                     }
-
-                }else{
-                    // En caso de que no se pueda logear
-                    Snackbar.make(findViewById(android.R.id.content), "Error al iniciar sesión", Snackbar.LENGTH_SHORT).show()
-
+                }  catch (e: Exception) {
+                    // Handle errors
                 }
             }
-
         }
 
+
     }
+
+    interface AuthService {
+        @POST("api/Personal/IniciarSesion")
+        suspend fun iniciarSesion(@Body loginRequest: LoginRequest): LoginResponse
+    }
+
+    data class LoginRequest(val dni: String, val password: String)
+    data class LoginResponse(val nombres: String, val apellidos: String, val token: String, val isEmailSent: Boolean)
+    data class ExtendedLoginResponse(val nombres: String, val apellidos: String, val token: String, val isEmailSent: Boolean, val dni: String)
 }
